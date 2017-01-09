@@ -24,7 +24,7 @@ return [
     |
     */
 
-    'standardsTree' => env('API_STANDARDS_TREE', 'x'),
+    'standardsTree' => env('API_STANDARDS_TREE', 'vnd'),
 
     /*
     |--------------------------------------------------------------------------
@@ -38,7 +38,7 @@ return [
     |
     */
 
-    'subtype' => env('API_SUBTYPE', ''),
+    'subtype' => env('API_SUBTYPE', 'dt'),
 
     /*
     |--------------------------------------------------------------------------
@@ -115,7 +115,7 @@ return [
     |
     */
 
-    'strict' => env('API_STRICT', false),
+    'strict' => env('API_STRICT', true),
 
     /*
     |--------------------------------------------------------------------------
