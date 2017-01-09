@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
@@ -20,15 +20,17 @@ try {
 */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
+    realpath(__DIR__ . '/../')
 );
 
 
+$app->configure('app');
 $app->configure('api');
+$app->configure('oauth2');
 
-// $app->withFacades();
+$app->withFacades();
 
-// $app->withEloquent();
+$app->withEloquent();
 
 /*
 |--------------------------------------------------------------------------
@@ -69,7 +71,19 @@ $app->singleton(
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
-
+$app->middleware(
+    [
+        \LucaDegasperi\OAuth2Server\Middleware\OAuthExceptionHandlerMiddleware::class
+    ]
+);
+$app->routeMiddleware(
+    [
+        'check-authorization-params' => \LucaDegasperi\OAuth2Server\Middleware\CheckAuthCodeRequestMiddleware::class,
+        'oauth'                      => \LucaDegasperi\OAuth2Server\Middleware\OAuthMiddleware::class,
+        'oauth-client'               => \LucaDegasperi\OAuth2Server\Middleware\OAuthClientOwnerMiddleware::class,
+        'oauth-user'                 => \LucaDegasperi\OAuth2Server\Middleware\OAuthUserOwnerMiddleware::class,
+    ]
+);
 /*
 |--------------------------------------------------------------------------
 | Register Service Providers
@@ -85,7 +99,33 @@ $app->singleton(
 // $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
+$app->register(\LucaDegasperi\OAuth2Server\Storage\FluentStorageServiceProvider::class);
+$app->register(\LucaDegasperi\OAuth2Server\OAuth2ServerServiceProvider::class);
 
+class_alias(\LucaDegasperi\OAuth2Server\Facades\Authorizer::class, 'Authorizer');
+
+
+app('Dingo\Api\Auth\Auth')->extend(
+    'oauth',
+    function ($app) {
+        $provider = new Dingo\Api\Auth\Provider\OAuth2($app['oauth2-server.authorizer']->getChecker());
+
+        $provider->setUserResolver(
+            function ($id) {
+                // Logic to return a user by their ID.
+                return App\User::find($id);
+            }
+        );
+
+        $provider->setClientResolver(
+            function ($id) {
+                // Logic to return a client by their ID.
+            }
+        );
+
+        return $provider;
+    }
+);
 /*
 |--------------------------------------------------------------------------
 | Load The Application Routes
@@ -97,8 +137,9 @@ $app->register(Dingo\Api\Provider\LumenServiceProvider::class);
 |
 */
 
-$app->group(['namespace' => 'App\Http\Controllers'], function ($app) {
-    require __DIR__.'/../routes/web.php';
-});
-
+$app->group(
+    ['namespace' => 'App\Http\Controllers'], function ($app) {
+    require __DIR__ . '/../routes/web.php';
+}
+);
 return $app;
