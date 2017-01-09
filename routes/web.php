@@ -11,6 +11,21 @@
 |
 */
 
-$app->get('/', function () use ($app) {
+$app->get(
+    '/', function () use ($app) {
     return $app->version();
-});
+}
+);
+
+$api = app('Dingo\Api\Routing\Router');
+$api->version(
+    'v1', [], function ($api) {
+    $api->get(
+        'stats', function () {
+        return [
+            'stats' => 'dingoapi is ok'
+        ];
+    }
+    );
+}
+);
