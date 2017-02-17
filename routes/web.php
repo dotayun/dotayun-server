@@ -17,6 +17,22 @@ $app->get(
         return $app->version();
     }
 );
+$app->group(
+    [
+        'prefix'    => 'steam',
+        'namespace' => 'App\Http\Controllers\Steam'
+    ],
+    function () use ($app) {
+
+        $app->get(
+            'getPlayerSummariesV2',
+            [
+                'as'   => 'getPlayerSummariesV2',
+                'uses' => 'ApiController@getPlayerSummariesV2'
+            ]
+        );
+    }
+);
 
 $api = app('Dingo\Api\Routing\Router');
 $api->version(

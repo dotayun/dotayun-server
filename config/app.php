@@ -44,4 +44,11 @@ return [
 
     'client_secret' => env('CLIENT_SECRET', 'DT-SECRET!'),
 
+    //steam的配置信息
+
+    'steam_setting' => [
+        'web_api_key' => 'E39D55F7AB0D356CCE8162E5DEBFD4C2',
+        'web_api_domain' => 'api.dotayun.com'
+    ]
+
 ];
