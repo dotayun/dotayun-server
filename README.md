@@ -19,3 +19,14 @@ If you discover a security vulnerability within Laravel, please send an e-mail t
 ## License
 
 The Lumen framework is open-sourced software licensed under the [MIT license](http://opensource.org/licenses/MIT)
+
+## dota api 参考
+* [个人信息查询](https://steamid.io/lookup/76561198171734841)
+* [Steam 网页 API 文档](https://steamcommunity.com/dev/)
+* [英雄信息](http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/?key=E39D55F7AB0D356CCE8162E5DEBFD4C2&match_id=2973492819&language=zh-CN)
+* [teamfortress wiki](https://wiki.teamfortress.com/wiki/WebAPI#Dota_2)
+* [比赛详情](http://api.steampowered.com/IDOTA2Match_570/GetMatchDetails/V001/?key=E39D55F7AB0D356CCE8162E5DEBFD4C2&match_id=2973492819)
+* [英雄列表](http://api.steampowered.com/IEconDOTA2_570/GetHeroes/v0001/?key=E39D55F7AB0D356CCE8162E5DEBFD4C2&match_id=2973492819&language=zh-CN)
+* [物品资源URL](http://cdn.dota2.com/apps/570/icons/econ/courier/godhorse/godhorse.dd9ec375e2a603ca83f13229a1c4aa4a9f893a21.png)
+* [icon](http://api.steampowered.com/IEconDOTA2_570/GetItemIconPath/V001/?key=E39D55F7AB0D356CCE8162E5DEBFD4C2&format=json&iconname=godhorse)
+* [](https://developer.valvesoftware.com/wiki/Steam_Web_API#GetGlobalStatsForGame_.28v0001.29)
