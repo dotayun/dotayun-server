@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers\Steam;
 
+use Illuminate\Http\Request;
 use Laravel\Lumen\Routing\Controller as BaseController;
 
 require(__ROOT__ . '/../vendor/autoload.php');
@@ -26,8 +27,15 @@ class ApiController extends BaseController {
         }
     }
 
-    public function getPlayerSummariesV2() {
-        $response = $this->steam_user->GetPlayerSummariesV2('76561198059720690');
+    public function getPlayerSummariesV2(\Dingo\Api\Http\Request $request, $steam_id) {
+        $steam_id = trim($steam_id);
+        $response = $this->steam_user->GetPlayerSummariesV2($steam_id);
+        return response()->json($response);
+    }
+
+    public function getFriendListV1(\Dingo\Api\Http\Request $request, $steam_id) {
+        $steam_id = trim($steam_id);
+        $response = $this->steam_user->GetFriendListV1($steam_id);
         return response()->json($response);
     }
 }

@@ -35,19 +35,30 @@ $app->group(
 );
 
 $api = app('Dingo\Api\Routing\Router');
-$api->version(
-    'v1', [],
-    function ($api) {
+$api->group(
+    [
+        'version'   => 'v1',
+        'prefix'    => 'steam',
+        'namespace' => 'App\Http\Controllers\Steam'
+    ],
+    function () use ($api) {
         $api->get(
-            'stats',
-            function () {
-                return [
-                    'stats' => 'dingoapi is ok'
-                ];
-            }
+            'getPlayerSummaries/{steam_id}',
+            [
+                'as'   => 'getPlayerSummariesV2',
+                'uses' => 'ApiController@getPlayerSummariesV2'
+            ]
+        );
+        $api->get(
+            'getFriendListV1/{steam_id}',
+            [
+                'as'   => 'GetFriendListV1',
+                'uses' => 'ApiController@GetFriendListV1'
+            ]
         );
     }
 );
+
 
 $app->post(
     'oauth/access_token',
@@ -58,7 +69,8 @@ $app->post(
 $api = app('Dingo\Api\Routing\Router');
 
 $api->version(
-    'v1', ['middleware' => 'api.auth'],
+    'v1',
+    ['middleware' => 'api.auth'],
     function ($api) {
         $api->get(
             'users/~me',
